@@ -5,7 +5,10 @@ import kr.ac.kopo.board.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -29,5 +32,23 @@ public class BoardRepositoryTests {
 
             boardRepository.save(board);
         });
+    }
+
+    @Transactional // 무조건 이 어노테이션 붙이고 해야됨
+    @Test
+    public void testRead(){
+        Optional<Board> result = boardRepository.findById(5L);
+        Board board = result.get();
+
+        System.out.println(board);
+        System.out.println(board.getWriter());
+    }
+
+    @Test
+    public void testReadWithWriter(){
+        Object result = boardRepository.getboardWithWriter(10L);
+        Object[] arr = (Object[]) result;
+
+        System.out.println(Arrays.toString(arr));
     }
 }
